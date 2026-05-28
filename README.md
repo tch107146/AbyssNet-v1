@@ -24,23 +24,6 @@ https://github.com/user-attachments/assets/5009bcb7-af76-421e-982f-92bdae909f21
 
 ---
 
-## 🚀 Key Improvements
-
-### 1. Attention Memory Residual (AMR)
-AMR feeds the raw output of the Cross-Attention (CA) layer from layer $i-1$ into layer $i$ as a spatial memory hint. 
-$$\text{target}_i = \text{target}_i + \gamma_{CA} \times \text{detach}(\text{ca\_output}_{i-1})$$
-$\gamma_{CA}$ is a learnable scalar initialized to $0$, allowing the model to adaptively decide how much historical location information to inherit.
-
-### 2. Self-Attention Skip (SA-Skip)
-SA-Skip propagates the attention relationship query matrix from the Self-Attention (SA) layer of layer $i-1$ into layer $i$.
-$$\text{target}_i = \text{target}_i + \gamma_{SA} \times \text{detach}(\text{sa\_output}_{i-1})$$
-Both AMR and SA-Skip use `.detach()` to block backward gradient propagation, preventing gradient explosion and saving training memory.
-
-### 3. Stochastic Depth (Random Layer Dropout)
-During training, the decoder randomly drops intermediate layers with a linear drop probability, reducing computational load and acting as a strong regularizer. During inference, all layers are fully active, ensuring zero regression in final predictions.
-
----
-
 ## 📊 Performance Comparison
 
 Experimental results trained on a custom 4-class COCO format dataset for 120 epochs:
